@@ -31,6 +31,16 @@ internal class BinanceExchange : IExchangeClient
         return new BinanceExchange(new ApiKeyLoader("E:\\Projects\\Trevor6\\ApiData.json"));
     }
 
+    /// <summary>
+    /// Get historical clines
+    /// </summary>
+    /// <typeparam name="TKLine"></typeparam>
+    /// <param name="symbol"></param>
+    /// <param name="interval"></param>
+    /// <param name="start"></param>
+    /// <param name="end"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
     public async IAsyncEnumerable<TKLine> GetHistoricalClines<TKLine>(string symbol, TrevorKlineInterval interval, DateTime start,
         DateTime? end = null, [EnumeratorCancellation] CancellationToken token = default) where TKLine : ITrevorKline
     {
@@ -60,34 +70,24 @@ internal class BinanceExchange : IExchangeClient
         }
     }
 
+    /// <summary>
+    /// Hitting API until it retunrs result
+    /// </summary>
+    /// <param name="symbol"></param>
+    /// <param name="interval"></param>
+    /// <param name="start"></param>
+    /// <param name="end"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
     private async Task<IEnumerable<IBinanceKline>> getHistoricalClinesWhileSuccess(string symbol, TrevorKlineInterval interval, DateTime start, DateTime? end, CancellationToken token = default)
     {
         while (true)
         {
-            var klines = await _client.Spot.Market.GetKlinesAsync(symbol, GetKlineInterval(interval), start, end, null, token);
+            var klines = await _client.Spot.Market.GetKlinesAsync(symbol, interval.GetKlineTrevorInterval(), start, end, null, token);
 
             if (klines.Success)
                 return klines.Data;
         }
-    }
-
-    /// <summary>
-    /// Returns kline interval in trevors enum
-    /// </summary>
-    /// <param name="interval"></param>
-    /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
-    private static KlineInterval GetKlineInterval(TrevorKlineInterval interval)
-    {
-        return interval switch
-        {
-            TrevorKlineInterval.OneMinute => KlineInterval.OneMinute,
-            TrevorKlineInterval.ThreeMinutes => KlineInterval.ThreeMinutes,
-            TrevorKlineInterval.FiveMinutes => KlineInterval.FiveMinutes,
-            TrevorKlineInterval.FifteenMinutes => KlineInterval.FifteenMinutes,
-            TrevorKlineInterval.ThirtyMinutes => KlineInterval.ThirtyMinutes,
-            _ => throw new NotImplementedException(),
-        };
     }
 }
 
