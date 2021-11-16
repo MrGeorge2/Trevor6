@@ -2,8 +2,6 @@
 
 public interface ITrevorKline
 {
-    string Symbol { get; }
-
     //
     // Summary:
     //     The time this candlestick opened

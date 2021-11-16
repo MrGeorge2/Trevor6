@@ -1,18 +1,21 @@
 ﻿using Newtonsoft.Json;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Trevor6.ExchangeData;
 public class ApiKeyLoader
 {
     private readonly string _path;
+
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     public ApiKeyLoader(string path)
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     {
         _path = path;
         load();
     }
-    /*
-    public ApiKeyLoader() { }
-    */
+
     public string Key { get; private set; }
+
     public string Secret { get; private set; }
 
     /// <summary>
@@ -42,7 +45,6 @@ public class ApiKeyLoader
         
         Key = apiKeyLoader.Key.ToString();
         Secret = apiKeyLoader.Secret.ToString();
-
     }
 }
 

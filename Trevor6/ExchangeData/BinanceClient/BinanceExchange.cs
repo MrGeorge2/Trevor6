@@ -22,10 +22,16 @@ internal class BinanceExchange : IExchangeClient
     }
 
     public BinanceExchange(ApiKeyLoader apiKeyLoader)
-        :this(apiKeyLoader.Key, apiKeyLoader.Secret)
-    {}
+        : this(apiKeyLoader.Key, apiKeyLoader.Secret)
+    { }
 
-    public async IAsyncEnumerable<ITrevorKline> GetHistoricalClines(string symbol, TrevorKlineInterval interval, DateTime start, DateTime? end = null, CancellationToken token = default)
+    public static IExchangeClient CreateClient()
+    {
+        return new BinanceExchange(new ApiKeyLoader("E:\\Projects\\Trevor6\\ApiData.json"));
+    }
+
+    public async IAsyncEnumerable<TKLine> GetHistoricalClines<TKLine>(string symbol, TrevorKlineInterval interval, DateTime start,
+        DateTime? end = null, CancellationToken token = default) where TKLine : ITrevorKline
     {
         var lastCandletime = start;
 
@@ -38,12 +44,18 @@ internal class BinanceExchange : IExchangeClient
                 break;
 
             var klines = await getHistoricalClinesWhileSuccess(symbol, interval, lastCandletime, end, token);
+
             foreach (var kline in klines)
             {
                 lastCandletime = kline.CloseTime;
 
-                yield return kline.GetTrevorKline(symbol);
+                yield return kline.GetTrevorKline<TKLine>(symbol);
             }
+
+# if SCRAPING
+            Console.WriteLine($"Symbol: {symbol} lastCandleTime={lastCandletime}");
+#endif
+
         }
     }
 
@@ -57,9 +69,6 @@ internal class BinanceExchange : IExchangeClient
                 return klines.Data;
         }
     }
-
-
-
 
     /// <summary>
     /// Returns kline interval in trevors enum
