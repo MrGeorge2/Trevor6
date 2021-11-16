@@ -3,6 +3,7 @@ using Binance.Net.Enums;
 using Binance.Net.Interfaces;
 using Binance.Net.Objects;
 using CryptoExchange.Net.Authentication;
+using System.Runtime.CompilerServices;
 using Trevor6.Abstract;
 using Trevor6.Enums;
 using Trevor6.ExchangeData;
@@ -31,14 +32,14 @@ internal class BinanceExchange : IExchangeClient
     }
 
     public async IAsyncEnumerable<TKLine> GetHistoricalClines<TKLine>(string symbol, TrevorKlineInterval interval, DateTime start,
-        DateTime? end = null, CancellationToken token = default) where TKLine : ITrevorKline
+        DateTime? end = null, [EnumeratorCancellation] CancellationToken token = default) where TKLine : ITrevorKline
     {
         var lastCandletime = start;
 
         if (end == null)
-            end = DateTime.Now;
+            end = DateTime.Now.AddHours(-2);
 
-        while (lastCandletime < end)
+        while (lastCandletime <= end)
         {
             if (token.IsCancellationRequested)
                 break;
@@ -49,7 +50,7 @@ internal class BinanceExchange : IExchangeClient
             {
                 lastCandletime = kline.CloseTime;
 
-                yield return kline.GetTrevorKline<TKLine>(symbol);
+                yield return kline.GetTrevorKline<TKLine>();
             }
 
 # if SCRAPING
@@ -78,26 +79,15 @@ internal class BinanceExchange : IExchangeClient
     /// <exception cref="NotImplementedException"></exception>
     private static KlineInterval GetKlineInterval(TrevorKlineInterval interval)
     {
-        switch (interval)
+        return interval switch
         {
-            case TrevorKlineInterval.OneMinute:
-                return KlineInterval.OneMinute;
-
-            case TrevorKlineInterval.ThreeMinutes:
-                return KlineInterval.ThreeMinutes;
-
-            case TrevorKlineInterval.FiveMinutes:
-                return KlineInterval.FiveMinutes;
-
-            case TrevorKlineInterval.FifteenMinutes:
-                return KlineInterval.FifteenMinutes;
-
-            case TrevorKlineInterval.ThirtyMinutes:
-                return KlineInterval.ThirtyMinutes;
-
-            default:
-                throw new NotImplementedException();
-        }
+            TrevorKlineInterval.OneMinute => KlineInterval.OneMinute,
+            TrevorKlineInterval.ThreeMinutes => KlineInterval.ThreeMinutes,
+            TrevorKlineInterval.FiveMinutes => KlineInterval.FiveMinutes,
+            TrevorKlineInterval.FifteenMinutes => KlineInterval.FifteenMinutes,
+            TrevorKlineInterval.ThirtyMinutes => KlineInterval.ThirtyMinutes,
+            _ => throw new NotImplementedException(),
+        };
     }
 }
 

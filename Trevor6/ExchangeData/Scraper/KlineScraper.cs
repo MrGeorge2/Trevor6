@@ -48,17 +48,18 @@ namespace Trevor6.ExchangeData.Scraper
                 await scraper.Scrape<TCline>(BinanceExchange.CreateClient());
             }
 
-            var tasks = new List<Task>();
-
-            tasks.Add(Scrape<BTCUSDT>());
-            tasks.Add(Scrape<ETHUSDT>());
-            tasks.Add(Scrape<BNBUSDT>());
-            tasks.Add(Scrape<ADAUSDT>());
-            tasks.Add(Scrape<XRPUSDT>());
-            tasks.Add(Scrape<DOTUSDT>());
-            tasks.Add(Scrape<DOGEUSDT>());
-            tasks.Add(Scrape<SHIBUSDT>());
-            tasks.Add(Scrape<LTCUSDT>());
+            var tasks = new List<Task>
+            {
+                Scrape<BTCUSDT>(),
+                Scrape<ETHUSDT>(),
+                Scrape<BNBUSDT>(),
+                Scrape<ADAUSDT>(),
+                Scrape<XRPUSDT>(),
+                Scrape<DOTUSDT>(),
+                Scrape<DOGEUSDT>(),
+                Scrape<SHIBUSDT>(),
+                Scrape<LTCUSDT>()
+            };
 
             await Task.WhenAll(tasks);
         }
