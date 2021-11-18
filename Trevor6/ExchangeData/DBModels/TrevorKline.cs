@@ -1,10 +1,12 @@
 ﻿using Binance.Net.Interfaces;
 using FancyApollo.DTO.DT;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using Trevor6.Abstract;
 
 namespace Trevor6.ExchangeData.DBModels;
 
-public abstract class TrevorKline : DTObject, ITrevorKline
+public abstract class TrevorKline : ITrevorKline
 {
     public TrevorKline(DateTime openTime, decimal open,
         decimal high, decimal low, decimal close, decimal baseVolume,
@@ -28,104 +30,63 @@ public abstract class TrevorKline : DTObject, ITrevorKline
     {
         return $"OpenTime={OpenTime} CloseTime={CloseTime} Open={Open} High={High} Low={Low} Close={Close}";
     }
-
+    
+    [BsonId]
+    public ObjectId ID { get;  }
 
     /// <summary>
     /// Open Time
     /// </summary>
-    public DateTime OpenTime
-    {
-        get => IndexedAttributes.GetAttribute<DateTime>(nameof(OpenTime));
-        private set => IndexedAttributes.SetAttribute<DateTime>(nameof(OpenTime), value);
-    }
-
+    public DateTime OpenTime { get; private set; }
+    
     /// <summary>
     /// Open price
     /// </summary>
-    public decimal Open
-    {
-        get => IndexedAttributes.GetAttribute<decimal>(nameof(Open));
-        private set => IndexedAttributes.SetAttribute<decimal>(nameof(Open), value);
-    }
+    public decimal Open { get; private set; }
+
 
     /// <summary>
     /// High price
     /// </summary>
-    public decimal High
-    {
-        get => IndexedAttributes.GetAttribute<decimal>(nameof(High));
-        private set => IndexedAttributes.SetAttribute<decimal>(nameof(High), value);
-    }
+    public decimal High { get; private set; }
 
     /// <summary>
     /// Low price
     /// </summary>
-    public decimal Low
-    {
-        get => IndexedAttributes.GetAttribute<decimal>(nameof(Low));
-        private set => IndexedAttributes.SetAttribute<decimal>(nameof(Low), value);
-    }
+    public decimal Low { get; private set; }
 
     /// <summary>
     /// Close price
     /// </summary>
-    public decimal Close
-    {
-        get => IndexedAttributes.GetAttribute<decimal>(nameof(Close));
-        private set => IndexedAttributes.SetAttribute<decimal>(nameof(Close), value);
-    }
+    public decimal Close { get; private set; }
 
     /// <summary>
     /// Base Volume
     /// </summary>
-    public decimal BaseVolume
-    {
-        get => IndexedAttributes.GetAttribute<decimal>(nameof(BaseVolume));
-        private set => IndexedAttributes.SetAttribute<decimal>(nameof(BaseVolume), value);
-    }
+    public decimal BaseVolume { get; private set; }
 
     /// <summary>
     /// Close Time
     /// </summary>
-    public DateTime CloseTime
-    {
-        get => IndexedAttributes.GetAttribute<DateTime>(nameof(CloseTime));
-        private set => IndexedAttributes.SetAttribute<DateTime>(nameof(CloseTime), value);
-    }
+    public DateTime CloseTime { get; private set; }
 
     /// <summary>
     /// QuoteVolume
     /// </summary>
-    public decimal QuoteVolume
-    {
-        get => IndexedAttributes.GetAttribute<decimal>(nameof(QuoteVolume));
-        private set => IndexedAttributes.SetAttribute<decimal>(nameof(QuoteVolume), value);
-    }
+    public decimal QuoteVolume { get; private set; }
 
     /// <summary>
     /// Trade count
     /// </summary>
-    public int TradeCount
-    {
-        get => IndexedAttributes.GetAttribute<int>(nameof(TradeCount));
-        private set => IndexedAttributes.SetAttribute<int>(nameof(TradeCount), value);
-    }
+    public int TradeCount { get; private set; }
 
     /// <summary>
     /// Taker buy base volume
     /// </summary>
-    public decimal TakerBuyBaseVolume
-    {
-        get => IndexedAttributes.GetAttribute<decimal>(nameof(TakerBuyBaseVolume));
-        private set => IndexedAttributes.SetAttribute<decimal>(nameof(TakerBuyBaseVolume), value);
-    }
+    public decimal TakerBuyBaseVolume { get; private set; }
 
     /// <summary>
     /// Taker buy quote volume
     /// </summary>
-    public decimal TakerBuyQuoteVolume
-    {
-        get => IndexedAttributes.GetAttribute<decimal>(nameof(TakerBuyQuoteVolume));
-        private set => IndexedAttributes.SetAttribute<decimal>(nameof(TakerBuyQuoteVolume), value);
-    }
+    public decimal TakerBuyQuoteVolume { get; private set; }
 }

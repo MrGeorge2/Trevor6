@@ -9,14 +9,19 @@ namespace Trevor6.ExchangeData.DBModels;
 
 public static class DBClient
 {
+    private const string KLINE_DB_NAME = "Klines";
+
     static DBClient()
     {
         DTORegistrator.RegisterFromRegistrator(new DBRegistrator());
     }
 
     public static IDTOManager GetDBClient()
-    {
-        var mongoClient = new MongoClient($"mongodb://fancyadmin:f4nc1P4ssr0d@localhost:27017");
-        return new DTOMongoManager(mongoClient);
-    }
+        => new DTOMongoManager(GetMongoClient());
+
+    public static IMongoCollection<TKline> GetKlineCollection<TKline>() where TKline : TrevorKline
+        => GetMongoClient().GetDatabase(KLINE_DB_NAME).GetCollection<TKline>(typeof(TKline).Name);
+
+    public static IMongoClient GetMongoClient()
+        => new MongoClient($"mongodb://fancyadmin:f4nc1P4ssr0d@localhost:27017");
 }

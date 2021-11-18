@@ -1,10 +1,4 @@
-﻿using FancyApollo.DTO.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Trevor6.Abstract;
+﻿using Trevor6.Abstract;
 using Trevor6.Binance.Client;
 using Trevor6.ExchangeData.DBModels;
 
@@ -12,28 +6,19 @@ namespace Trevor6.ExchangeData.Scraper
 {
     public class KlineScraper
     {
-        private readonly IDTOManager _dtoManager;
-
-        /// <summary>
-        /// Scraper for historical clines
-        /// </summary>
-        /// <param name="symbol"></param>
-        public KlineScraper()
-        {
-            _dtoManager = DBClient.GetDBClient();
-        }
-
         /// <summary>
         /// Scrape symbol to DB
         /// </summary>
         /// <param name="exchange"></param>
         /// <returns></returns>
-        public async Task Scrape<TTrevorKline>(IExchangeClient exchange) where TTrevorKline : ITrevorKline
+        public async Task Scrape<TTrevorKline>(IExchangeClient exchange) where TTrevorKline : TrevorKline
         {
+            var collection = DBClient.GetKlineCollection<TTrevorKline>();
+
             var klines = exchange.GetHistoricalClines<TTrevorKline>(typeof(TTrevorKline).Name, Enums.TrevorKlineInterval.FifteenMinutes, new DateTime(2017, 1, 1));
 
-            await foreach (IDTObject kline in klines)
-                await _dtoManager.SaveChangesAsync(kline);
+            await foreach (TTrevorKline kline in klines)
+                await collection.InsertOneAsync(kline);
         }
         
         /// <summary>
@@ -42,7 +27,7 @@ namespace Trevor6.ExchangeData.Scraper
         /// <returns></returns>
         public async static Task ScrapeAllSymbols()
         {
-            static async Task Scrape<TCline>() where TCline : ITrevorKline
+            static async Task Scrape<TCline>() where TCline : TrevorKline
             {
                 var scraper = new KlineScraper();
                 await scraper.Scrape<TCline>(BinanceExchange.CreateClient());

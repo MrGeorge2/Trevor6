@@ -1,7 +1,12 @@
-﻿namespace Trevor6.Abstract;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace Trevor6.Abstract;
 
 public interface ITrevorKline
 {
+    [BsonId]
+    ObjectId ID { get; }
     //
     // Summary:
     //     The time this candlestick opened
