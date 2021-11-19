@@ -13,7 +13,7 @@ public class StockMarket<TKline> where TKline : TrevorKline
     /// <summary>
     /// In case there ont candle is 15 minuts - then 192 candles == 2 days
     /// </summary>
-    private const uint NUMBER_OF_CANDLES_IN_SAMPLE = 192;
+    public const uint NUMBER_OF_CANDLES_IN_SAMPLE = 192;
 
     private readonly IEnumerable<TKline> _klines;
 
@@ -22,6 +22,11 @@ public class StockMarket<TKline> where TKline : TrevorKline
         Symbol = typeof(TKline).Name;
 
         _klines = getTrevorKlines();
+    }
+
+    public void StockMarketLoop(ITrader trader)
+    {
+        StockMarketLoop(new ITrader[] { trader });
     }
 
     /// <summary>
@@ -35,6 +40,9 @@ public class StockMarket<TKline> where TKline : TrevorKline
             foreach (var trader in traders)
             {
                 trader.AddNewSample(sample.AsEnumerable());
+
+                if (trader.IsEliminated)
+                    return;
             }
         }
     }

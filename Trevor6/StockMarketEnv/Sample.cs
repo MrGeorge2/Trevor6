@@ -1,10 +1,11 @@
 ﻿using MongoDB.Bson;
+using System.Collections;
 using Trevor6.Abstract;
 
 
 namespace Trevor6.Learning;
 
-public struct Sample
+public struct Sample : IEnumerable<double>
 {
     #region Trevor kline data
 
@@ -25,6 +26,30 @@ public struct Sample
     public decimal TakerBuyBaseVolume { get; internal set; }
 
     public decimal TakerBuyQuoteVolume { get; internal set; }
+
+    public IEnumerator<double> GetEnumerator()
+    {
+        var enumerable = new double[] 
+        { 
+            (double)Open,
+            (double)High,
+            (double)Low,
+            (double)Close,
+            (double)BaseVolume,
+            (double)QuoteVolume,
+            (double)TradeCount,
+            (double)TakerBuyBaseVolume, 
+            ((double)TakerBuyQuoteVolume) 
+        }.AsEnumerable();
+
+        return enumerable.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
 
     #endregion
 

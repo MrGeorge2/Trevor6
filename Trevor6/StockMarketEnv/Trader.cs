@@ -7,6 +7,11 @@ namespace Trevor6.Learning;
 
 public class Trader : ITrader
 {
+    /// <summary>
+    /// Percentage
+    /// </summary>
+    private const decimal FEE = (decimal)0.075;
+
     private readonly Stack<Sample> tradeStack = new();
     private bool isInTrade => tradeStack.Any();
 
@@ -21,17 +26,19 @@ public class Trader : ITrader
 
     public decimal Profit { get; private set; }
 
+    public int NumberOfProfitabletrades { get; private set; }
+
+    public int NumberOfNonProfitableTrades { get; private set; }
+
     public void AddNewSample(IEnumerable<Sample> newSample)
     {
         // new samples are type queue so last sample is the newest one
         var lastSample = newSample.Last();
 
-        // TODO: Add profit to new sample as decimal
-
-        think(newSample, lastSample);
+        Think(newSample, lastSample);
     }
 
-    private void think(IEnumerable<Sample> newSample, Sample lastSample)
+    protected virtual void Think(IEnumerable<Sample> newSample, Sample lastSample)
     {
         var random = new Random();
         var prediction = random.Next(0, 2);
@@ -44,10 +51,12 @@ public class Trader : ITrader
 
     public void Buy(Sample buySample)
     {
+        /*
         if (isInTrade)
             Console.WriteLine($"Player {Name} continues in trade with profit {getActualProfit()}");
         else
             Console.WriteLine($"Player {Name} buys");
+        */
 
         // Add the last sample to trade stack
         tradeStack.Push(buySample);
@@ -61,7 +70,15 @@ public class Trader : ITrader
 
         var tradeProfit = getActualProfit();
 
+        /*
         Console.WriteLine($"Player {Name} sold with profit {Math.Round(tradeProfit, 4)}");
+        Console.WriteLine($"Player {Name} have total profit of {Profit}");
+        */
+
+        if (tradeProfit > 0)
+            NumberOfProfitabletrades++;
+        else if (tradeProfit < 0)
+            NumberOfNonProfitableTrades++;
 
         // Add to total profit
         Profit += tradeProfit;
@@ -76,6 +93,6 @@ public class Trader : ITrader
         var buySample = tradeStack.Last();
         var sellSample = tradeStack.First();
 
-        return sellSample.Close - buySample.Open;
+        return (sellSample.Close - buySample.Open) * (1 - FEE);
     }
 }

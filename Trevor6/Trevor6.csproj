@@ -19,11 +19,18 @@
     <PackageReference Include="Binance.Net" Version="7.2.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.13.2" />
+    <PackageReference Include="SharpNeatLib" Version="2.4.4" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="FancyApollo.DTO">
       <HintPath>..\References\FancyApollo.DTO.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\References\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpNeatDomains">
+      <HintPath>..\References\SharpNeatDomains.dll</HintPath>
     </Reference>
   </ItemGroup>
 
