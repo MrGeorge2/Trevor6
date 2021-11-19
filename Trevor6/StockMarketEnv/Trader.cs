@@ -11,6 +11,7 @@ public class Trader : ITrader
     /// Percentage
     /// </summary>
     private const decimal FEE = (decimal)0.075;
+    private const decimal TRADE_AMOUNT_DOLARS = (decimal)100;
 
     private readonly Stack<Sample> tradeStack = new();
     private bool isInTrade => tradeStack.Any();
@@ -93,6 +94,9 @@ public class Trader : ITrader
         var buySample = tradeStack.Last();
         var sellSample = tradeStack.First();
 
-        return (sellSample.Close * (1 - FEE)) - (buySample.Open * (1 - FEE));
+        var buyAmount = TRADE_AMOUNT_DOLARS / buySample.Open;
+        var sellAmount = TRADE_AMOUNT_DOLARS / sellSample.Close;
+
+        return (sellAmount * (1 - FEE)) - (buyAmount * (1 - FEE));
     }
 }
