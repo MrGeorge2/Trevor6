@@ -50,15 +50,13 @@ public class StockMarketEvaluator : IPhenomeEvaluator<IBlackBox>
         var stockMarket = new StockMarket<TPair>();
         stockMarket.StockMarketLoop(trader);
 
-        double fitness = trader.NumberOfProfitabletrades;
+        double fitness = 0;
 
         if (trader.Profit > 0)
         {
-            fitness += trader.NumberOfProfitabletrades * 10;
+            fitness = (double)trader.Profit;
             Console.WriteLine($"\n\nCurrencyPair={currencyPair} \t Profi={Math.Round(trader.Profit, 3)}\t Fitness={fitness} \t Profitable trades={trader.NumberOfProfitabletrades} \t Non profitable trades={trader.NumberOfNonProfitableTrades} !! \n\n");
         }
-        else
-            fitness = 0;
 
         return fitness;
     }

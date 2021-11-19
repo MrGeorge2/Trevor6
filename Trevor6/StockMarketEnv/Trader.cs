@@ -93,6 +93,6 @@ public class Trader : ITrader
         var buySample = tradeStack.Last();
         var sellSample = tradeStack.First();
 
-        return (sellSample.Close - buySample.Open) * (1 - FEE);
+        return (sellSample.Close * (1 - FEE)) - (buySample.Open * (1 - FEE));
     }
 }
