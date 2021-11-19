@@ -12,23 +12,21 @@ public class Trader : ITrader
 
     public Trader(string name)
     {
-        IsEliminated = false;
         Profit = 0;
         Name = name;
     }
+
     public string Name { get; }
-    public bool IsEliminated { get; private set; }
+    public bool IsEliminated => Profit < 0;
 
     public decimal Profit { get; private set; }
 
     public void AddNewSample(IEnumerable<Sample> newSample)
     {
+        // new samples are type queue so last sample is the newest one
         var lastSample = newSample.Last();
 
-        if (isInTrade)
-        {
-            lastSample.Profit = getActualProfit();
-        }
+        // TODO: Add profit to new sample as decimal
 
         think(newSample, lastSample);
     }
@@ -47,15 +45,17 @@ public class Trader : ITrader
     public void Buy(Sample buySample)
     {
         if (isInTrade)
-            Console.WriteLine($"Player {Name} continues in trade with profit {buySample.Profit}");
+            Console.WriteLine($"Player {Name} continues in trade with profit {getActualProfit()}");
         else
             Console.WriteLine($"Player {Name} buys");
 
+        // Add the last sample to trade stack
         tradeStack.Push(buySample);
     }
 
     public void Sell()
     {
+        // No trade was opened, so nothing happens
         if (!tradeStack.Any())
             return;
 
@@ -63,8 +63,10 @@ public class Trader : ITrader
 
         Console.WriteLine($"Player {Name} sold with profit {Math.Round(tradeProfit, 4)}");
 
+        // Add to total profit
         Profit += tradeProfit;
 
+        // Clean the trade stack
         tradeStack.Clear();
 
     }

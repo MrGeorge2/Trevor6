@@ -6,8 +6,6 @@ namespace Trevor6.Learning;
 
 public struct Sample
 {
-    public decimal Profit { get; internal set; }
-
     #region Trevor kline data
 
     public decimal Open { get; internal set; }
