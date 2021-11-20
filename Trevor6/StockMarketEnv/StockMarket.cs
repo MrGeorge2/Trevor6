@@ -39,10 +39,11 @@ public class StockMarket<TKline> where TKline : TrevorKline
         {
             foreach (var trader in traders)
             {
+                if (trader.IsEliminated)
+                    continue;
+
                 trader.AddNewSample(sample.AsEnumerable());
 
-                if (trader.IsEliminated)
-                    return;
             }
         }
     }

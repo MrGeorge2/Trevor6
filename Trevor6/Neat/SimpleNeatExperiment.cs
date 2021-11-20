@@ -98,7 +98,7 @@ namespace Trevor6.Neat
             _complexityRegulationStr = "Absolute";
             _complexityThreshold = 5187;
             _description = "Stock market experiment";
-            _parallelOptions = new ParallelOptions() { MaxDegreeOfParallelism = 150 };
+            _parallelOptions = new ParallelOptions() { MaxDegreeOfParallelism = 50 };
 
             _eaParams = new NeatEvolutionAlgorithmParameters();
             _eaParams.SpecieCount = _specieCount;

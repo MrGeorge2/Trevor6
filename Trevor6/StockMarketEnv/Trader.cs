@@ -14,7 +14,6 @@ public class Trader : ITrader
     private const decimal TRADE_AMOUNT_DOLARS = (decimal)100;
 
     private readonly Stack<Sample> tradeStack = new();
-    private bool isInTrade => tradeStack.Any();
 
     public Trader(string name)
     {
