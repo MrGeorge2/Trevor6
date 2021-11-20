@@ -10,7 +10,7 @@ public class Trader : ITrader
     /// <summary>
     /// Percentage
     /// </summary>
-    private const decimal FEE = (decimal)0.075;
+    private const decimal FEE = (decimal)0.00075;
     private const decimal TRADE_AMOUNT_DOLARS = (decimal)100;
 
     private readonly Stack<Sample> tradeStack = new();
