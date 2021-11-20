@@ -19,6 +19,7 @@ namespace Neat
 {
     public class StockMarketParallelExperiment : INeatExperiment
     {
+        public string POPULATION_LOCATION => @"E:\Projects\Trevor6\Champs\StockMarketPopulation.xml";
 
         NeatEvolutionAlgorithmParameters _eaParams;
         NeatGenomeParameters _neatGenomeParams;
@@ -105,7 +106,7 @@ namespace Neat
         /// </summary>
         public List<NeatGenome> LoadPopulation(XmlReader xr)
         {
-            return NeatGenomeUtils.LoadPopulation(xr, false, this.InputCount, this.OutputCount);
+            return NeatGenomeXmlIO.ReadCompleteGenomeList(xr, false, new NeatGenomeFactory(InputCount, OutputCount, _neatGenomeParams));
         }
 
         /// <summary>
@@ -146,9 +147,14 @@ namespace Neat
         {
             // Create a genome2 factory with our neat genome parameters object and the appropriate number of input and output neuron genes.
             IGenomeFactory<NeatGenome> genomeFactory = CreateGenomeFactory();
+            
+            List<NeatGenome> genomeList;
 
-            // Create an initial population of randomly generated genomes.
-            List<NeatGenome> genomeList = genomeFactory.CreateGenomeList(populationSize, 0);
+            if (File.Exists(POPULATION_LOCATION))
+                genomeList = LoadPopulation(XmlReader.Create(POPULATION_LOCATION));
+            else
+                // Create an initial population of randomly generated genomes.
+                genomeList = genomeFactory.CreateGenomeList(populationSize, 0);
 
             // Create evolution algorithm.
             return CreateEvolutionAlgorithm(genomeFactory, genomeList);

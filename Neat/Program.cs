@@ -37,6 +37,7 @@ namespace TicTacToeCoevolution
 {
     class Program
     {
+        static StockMarketParallelExperiment experiment;
         static NeatEvolutionAlgorithm<NeatGenome> _ea;
         const string CHAMPION_FILE = @"E:\Projects\Trevor6\Champs\trader_champion.xml";
 
@@ -44,7 +45,7 @@ namespace TicTacToeCoevolution
         {
 
             // Experiment classes encapsulate much of the nuts and bolts of setting up a NEAT search.
-            var experiment = new StockMarketParallelExperiment();
+            experiment = new StockMarketParallelExperiment();
 
             experiment.Initialize("TicTacToe", null);
 
@@ -52,11 +53,9 @@ namespace TicTacToeCoevolution
             _ea = experiment.CreateEvolutionAlgorithm();
             _ea.UpdateEvent += new EventHandler(ea_UpdateEvent);
 
-            while (true)
-            {
-                // Start algorithm (it will run on a background thread).
-                _ea.StartContinue();
-            }
+            // Start algorithm (it will run on a background thread).
+            _ea.StartContinue();
+
 
             // Hit return to quit.
             Console.ReadLine();
@@ -65,8 +64,12 @@ namespace TicTacToeCoevolution
         static void ea_UpdateEvent(object sender, EventArgs e)
         {
             // Save the best genome to file
-            var doc = NeatGenomeXmlIO.SaveComplete(new List<NeatGenome>() { _ea.CurrentChampGenome }, false);
-            doc.Save(CHAMPION_FILE);
+            var champDoc = NeatGenomeXmlIO.SaveComplete(new List<NeatGenome>() { _ea.CurrentChampGenome }, false);
+            champDoc.Save(CHAMPION_FILE);
+
+            // Save the best genome to file
+            var populationDoc = NeatGenomeXmlIO.SaveComplete(_ea.GenomeList, false);
+            populationDoc.Save(experiment.POPULATION_LOCATION);
         }
     }
 }

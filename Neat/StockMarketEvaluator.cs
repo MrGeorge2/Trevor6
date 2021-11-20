@@ -49,31 +49,22 @@ namespace Neat
             }
 
             evaluateOnCurrentyPair<BTCUSDT>(traders.ToArray());
-            traders.ForEach(trader => trader.Reset());
 
             evaluateOnCurrentyPair<ETHUSDT>(traders.ToArray());
-            traders.ForEach(trader => trader.Reset());
 
             evaluateOnCurrentyPair<BNBUSDT>(traders.ToArray());
-            traders.ForEach(trader => trader.Reset());
 
             evaluateOnCurrentyPair<ADAUSDT>(traders.ToArray());
-            traders.ForEach(trader => trader.Reset());
 
             evaluateOnCurrentyPair<XRPUSDT>(traders.ToArray());
-            traders.ForEach(trader => trader.Reset());
 
             evaluateOnCurrentyPair<DOTUSDT>(traders.ToArray());
-            traders.ForEach(trader => trader.Reset());
 
             evaluateOnCurrentyPair<DOGEUSDT>(traders.ToArray());
-            traders.ForEach(trader => trader.Reset());
 
             evaluateOnCurrentyPair<SHIBUSDT>(traders.ToArray());
-            traders.ForEach(trader => trader.Reset());
 
             evaluateOnCurrentyPair<LTCUSDT>(traders.ToArray());
-            traders.ForEach(trader => trader.Reset());
 
             brainsWithFitness = getResult(traders.ToArray());
 
@@ -85,6 +76,9 @@ namespace Neat
             var stockMarket = new StockMarket<TPair>();
             
             stockMarket.StockMarketLoop(traders);
+
+            foreach (var trader in traders)
+                trader.Reset();
 
             Console.WriteLine($"Currency = {typeof(TPair).Name} pair evalued");
         }
