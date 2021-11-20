@@ -9,25 +9,17 @@ using SharpNeat.Decoders;
 using System.Threading.Tasks;
 using SharpNeat.Core;
 using SharpNeat.EvolutionAlgorithms.ComplexityRegulation;
-using SharpNeat.Decoders.Neat;
 using SharpNeat.Phenomes;
+using SharpNeat.Decoders.Neat;
 using SharpNeat.DistanceMetrics;
 using SharpNeat.SpeciationStrategies;
 using System.Xml;
 
-namespace Trevor6.Neat
+namespace Neat
 {
-
-    /// <summary>
-    /// Helper class that hides most of the details of setting up an experiment.
-    /// If you're just doing a simple console-based experiment, this is probably
-    /// what you want to inherit from. However, if you need more flexibility
-    /// (e.g., custom genome/phenome creation or performing complex population
-    /// evaluations) then you probably want to implement your own INeatExperiment
-    /// class.
-    /// </summary>
-    public abstract class SimpleNeatExperiment : INeatExperiment
+    public class StockMarketParallelExperiment : INeatExperiment
     {
+
         NeatEvolutionAlgorithmParameters _eaParams;
         NeatGenomeParameters _neatGenomeParams;
         string _name;
@@ -39,16 +31,18 @@ namespace Trevor6.Neat
         string _description;
         ParallelOptions _parallelOptions;
 
-        #region Abstract properties that subclasses must implement
-        public abstract IPhenomeEvaluator<IBlackBox> PhenomeEvaluator { get; }
-        public abstract int InputCount { get; }
-        public abstract int OutputCount { get; }
-        public abstract bool EvaluateParents { get; }
-        #endregion
-
-
-
         #region INeatExperiment Members
+        public int InputCount => (192 * 9) + 1; // todo dodelat konstanty
+        public int OutputCount => 2;
+
+        public IParallelEvaluator<IBlackBox> PhenomeEvaluator
+        {
+            get
+            {
+                return new StockMarketEvaluator();
+            }
+        }
+
         public string Description
         {
             get { return _description; }
@@ -124,8 +118,8 @@ namespace Trevor6.Neat
         }
 
         /// <summary>
-        /// Create a genome2 factory for the experiment.
-        /// Create a genome2 factory with our neat genome2 parameters object and the appropriate number of input and output neuron genes.
+        /// Create a genome factory for the experiment.
+        /// Create a genome factory with our neat genome parameters object and the appropriate number of input and output neuron genes.
         /// </summary>
         public IGenomeFactory<NeatGenome> CreateGenomeFactory()
         {
@@ -150,7 +144,7 @@ namespace Trevor6.Neat
         /// </summary>
         public NeatEvolutionAlgorithm<NeatGenome> CreateEvolutionAlgorithm(int populationSize)
         {
-            // Create a genome2 factory with our neat genome2 parameters object and the appropriate number of input and output neuron genes.
+            // Create a genome2 factory with our neat genome parameters object and the appropriate number of input and output neuron genes.
             IGenomeFactory<NeatGenome> genomeFactory = CreateGenomeFactory();
 
             // Create an initial population of randomly generated genomes.
@@ -177,17 +171,11 @@ namespace Trevor6.Neat
             // Create the evolution algorithm.
             NeatEvolutionAlgorithm<NeatGenome> ea = new NeatEvolutionAlgorithm<NeatGenome>(_eaParams, speciationStrategy, complexityRegulationStrategy);
 
-            // Create genome2 decoder.
-            IGenomeDecoder<NeatGenome, IBlackBox> genomeDecoder = new NeatGenomeDecoder(_activationScheme);
+            // Create genome decoder.
+            IGenomeDecoder<NeatGenome, IBlackBox> genomeDecoder = CreateGenomeDecoder();
 
-            // Create a genome2 list evaluator. This packages up the genome2 decoder with the genome2 evaluator.
-            IGenomeListEvaluator<NeatGenome> genomeListEvaluator = new ParallelGenomeListEvaluator<NeatGenome, IBlackBox>(genomeDecoder, PhenomeEvaluator, _parallelOptions);
-
-            // Wrap the list evaluator in a 'selective' evaulator that will only evaluate new genomes. That is, we skip re-evaluating any genomes
-            // that were in the population in previous generations (elite genomes). This is determiend by examining each genome2's evaluation info object.
-            if (!EvaluateParents)
-                genomeListEvaluator = new SelectiveGenomeListEvaluator<NeatGenome>(genomeListEvaluator,
-                                         SelectiveGenomeListEvaluator<NeatGenome>.CreatePredicate_OnceOnly());
+            // Create a genome list evaluator. This packages up the genome decoder with the phenome evaluator.
+            IGenomeListEvaluator<NeatGenome> genomeListEvaluator = new ParallelListEvaluator<NeatGenome, IBlackBox>(genomeDecoder, PhenomeEvaluator);
 
             // Initialize the evolution algorithm.
             ea.Initialize(genomeListEvaluator, genomeFactory, genomeList);
@@ -203,7 +191,6 @@ namespace Trevor6.Neat
         {
             return new NeatGenomeDecoder(_activationScheme);
         }
-
         #endregion
     }
 }

@@ -30,16 +30,19 @@ public class StockMarketEvaluator : IPhenomeEvaluator<IBlackBox>
         var trader = new NeatTrader(brain);
         double fitness = 0;
 
+        fitness += evaluateOnCurrentyPair<SHIBUSDT>(trader);
+
+        /*
         fitness += evaluateOnCurrentyPair<BTCUSDT>(trader);
         fitness += evaluateOnCurrentyPair<ETHUSDT>(trader);
         fitness += evaluateOnCurrentyPair<BNBUSDT>(trader);
         fitness += evaluateOnCurrentyPair<ADAUSDT>(trader);
         fitness += evaluateOnCurrentyPair<XRPUSDT>(trader);
         fitness += evaluateOnCurrentyPair<DOTUSDT>(trader);
-        fitness += evaluateOnCurrentyPair<DOGEUSDT>(trader);
+        //fitness += evaluateOnCurrentyPair<DOGEUSDT>(trader);
         fitness += evaluateOnCurrentyPair<SHIBUSDT>(trader);
         fitness += evaluateOnCurrentyPair<LTCUSDT>(trader);
-
+        */
         return new FitnessInfo(fitness, fitness);
     }
 

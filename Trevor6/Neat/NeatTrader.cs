@@ -5,7 +5,7 @@ namespace Trevor6.Neat;
 
 public class NeatTrader : Trader
 {
-    private readonly IBlackBox _brain;
+    public readonly IBlackBox _brain;
 
     public NeatTrader(IBlackBox brain) : base("NoName")
     {
