@@ -98,4 +98,9 @@ public class Trader : ITrader
 
         return (sellAmount * (1 - FEE)) - (buyAmount * (1 - FEE));
     }
+
+    public void Reset()
+    {
+        tradeStack.Clear();
+    }
 }

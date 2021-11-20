@@ -48,42 +48,69 @@ namespace Neat
                 traders.Add(new NeatTrader(brainWithFitness.Phenome));
             }
 
-            brainsWithFitness = evaluateOnCurrentyPair<SHIBUSDT>(traders.ToArray());
+            evaluateOnCurrentyPair<BTCUSDT>(traders.ToArray());
+            traders.ForEach(trader => trader.Reset());
 
-            logMaximalFitness(brainsWithFitness);
+            evaluateOnCurrentyPair<ETHUSDT>(traders.ToArray());
+            traders.ForEach(trader => trader.Reset());
+
+            evaluateOnCurrentyPair<BNBUSDT>(traders.ToArray());
+            traders.ForEach(trader => trader.Reset());
+
+            evaluateOnCurrentyPair<ADAUSDT>(traders.ToArray());
+            traders.ForEach(trader => trader.Reset());
+
+            evaluateOnCurrentyPair<XRPUSDT>(traders.ToArray());
+            traders.ForEach(trader => trader.Reset());
+
+            evaluateOnCurrentyPair<DOTUSDT>(traders.ToArray());
+            traders.ForEach(trader => trader.Reset());
+
+            evaluateOnCurrentyPair<DOGEUSDT>(traders.ToArray());
+            traders.ForEach(trader => trader.Reset());
+
+            evaluateOnCurrentyPair<SHIBUSDT>(traders.ToArray());
+            traders.ForEach(trader => trader.Reset());
+
+            evaluateOnCurrentyPair<LTCUSDT>(traders.ToArray());
+            traders.ForEach(trader => trader.Reset());
+
+            brainsWithFitness = getResult(traders.ToArray());
 
             _evalCount++;
         }
 
-        private BrainWithFitness<IBlackBox>[] evaluateOnCurrentyPair<TPair>(NeatTrader[] traders) where TPair : TrevorKline
+        private void evaluateOnCurrentyPair<TPair>(NeatTrader[] traders) where TPair : TrevorKline
         {
-            var currencyPair = typeof(TPair).Name;
-
             var stockMarket = new StockMarket<TPair>();
             
             stockMarket.StockMarketLoop(traders);
 
+            Console.WriteLine($"Currency = {typeof(TPair).Name} pair evalued");
+        }
+
+        private BrainWithFitness<IBlackBox>[] getResult(NeatTrader[] traders)
+        {
             var newBrainsWIthFitness = new List<BrainWithFitness<IBlackBox>>();
+
+            double maxFitness = 0;
 
             foreach (var trader in traders)
             {
                 double fitness = 0;
 
                 if (trader.Profit > 0)
-                {
                     fitness = (double)trader.Profit;
-                    Console.WriteLine($"\n\nCurrency pair={currencyPair} \t Profi={Math.Round(trader.Profit, 3)}\t Fitness={fitness} \t Profitable trades={trader.NumberOfProfitabletrades} \t Non profitable trades={trader.NumberOfNonProfitableTrades} !! \n\n");
-                }
+
+                if (fitness > maxFitness)
+                    maxFitness = fitness;
 
                 newBrainsWIthFitness.Add(new BrainWithFitness<IBlackBox>(trader._brain, new FitnessInfo(fitness, fitness)));
             }
-            return newBrainsWIthFitness.ToArray();
-        }
 
-        private void logMaximalFitness(BrainWithFitness<IBlackBox>[] brainsWithFitness)
-        {
-            var maxFitnes = brainsWithFitness.Max(x => x.Fitness);
-            Console.WriteLine($"\n\nMaximal fitness = {maxFitnes._fitness} \n\n");
+            Console.WriteLine($"\n\nMaximal fitness = {maxFitness} \n\n");
+            
+            return newBrainsWIthFitness.ToArray();
         }
 
         /// <summary>

@@ -86,7 +86,7 @@ namespace Neat
         public void Initialize(string name, XmlElement xmlConfig)
         {
             _name = name;
-            _populationSize = 300;
+            _populationSize = 500;
             _specieCount = 150;
             _activationScheme = NetworkActivationScheme.CreateCyclicFixedTimestepsScheme(2); //ExperimentUtils.CreateActivationScheme(xmlConfig, "Activation");
             _complexityRegulationStr = "Absolute";

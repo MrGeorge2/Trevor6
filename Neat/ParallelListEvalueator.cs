@@ -101,8 +101,13 @@ namespace Neat
             _phenomeEvaluator.Evaluate(ref brainsWithFitnessArray);
 
             // Update every genome in the population with its new fitness score.
-            for (int i = 0; i < brainsWithFitnessArray.Length; i++)
+            for (int i = 0; i < genomeList.Count; i++)
             {
+                TPhenome phenome = _genomeDecoder.Decode(genomeList[i]);
+
+                if (phenome == null)
+                    continue;
+
                 genomeList[i].EvaluationInfo.SetFitness(brainsWithFitnessArray[i].Fitness._fitness);
             }
         }
