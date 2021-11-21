@@ -14,3 +14,5 @@ using Trevor6.Learning.Abstract;
 await KlineScraper.ScrapeAllSymbols();
 
 #endif
+
+Console.ReadKey();
