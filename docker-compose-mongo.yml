@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo:focal
+    restart: unless-stopped
+    container_name: 'mongo-db-service'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: fancyadmin
+      MONGO_INITDB_ROOT_PASSWORD: f4nc1P4ssr0d
+    ports:
+      - "27017-27019:27017-27019"
+  

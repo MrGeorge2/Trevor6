@@ -6,7 +6,6 @@ using Trevor6.ExchangeData.DBModels;
 using Trevor6.ExchangeData.Scraper;
 using Trevor6.Learning;
 using Trevor6.Learning.Abstract;
-using Trevor6.Neat;
 
 
 
@@ -15,14 +14,3 @@ using Trevor6.Neat;
 await KlineScraper.ScrapeAllSymbols();
 
 #endif
-/*
-var stockMarket = new StockMarket<BTCUSDT>();
-var traders = new List<Trader>();
-
-for (int i = 0; i < 500; i++)
-    traders.Add(new Trader(i.ToString()));
-
-stockMarket.StockMarketLoop(traders.ToArray());
-
-*/
-Neat.Main();
