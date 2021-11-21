@@ -47,7 +47,7 @@ namespace Neat
             {
                 traders.Add(new NeatTrader(brainWithFitness.Phenome));
             }
-
+            
             evaluateOnCurrentyPair<BTCUSDT>(traders.ToArray());
 
             evaluateOnCurrentyPair<ETHUSDT>(traders.ToArray());
@@ -61,11 +61,11 @@ namespace Neat
             evaluateOnCurrentyPair<DOTUSDT>(traders.ToArray());
 
             evaluateOnCurrentyPair<DOGEUSDT>(traders.ToArray());
-
+            
             evaluateOnCurrentyPair<SHIBUSDT>(traders.ToArray());
-
+            
             evaluateOnCurrentyPair<LTCUSDT>(traders.ToArray());
-
+            
             brainsWithFitness = getResult(traders.ToArray());
 
             _evalCount++;
@@ -75,7 +75,7 @@ namespace Neat
         {
             var stockMarket = new StockMarket<TPair>();
             
-            stockMarket.StockMarketLoop(traders);
+            stockMarket.StockMarketLoop(traders).GetAwaiter().GetResult();
 
             foreach (var trader in traders)
                 trader.Reset();
