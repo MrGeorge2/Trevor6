@@ -24,27 +24,34 @@ public class StockMarket<TKline> where TKline : TrevorKline
         _klines = getTrevorKlines();
     }
 
-    public void StockMarketLoop(ITrader trader)
+    public async Task StockMarketLoop(ITrader trader)
     {
-        StockMarketLoop(new ITrader[] { trader });
+        await StockMarketLoop(new ITrader[] { trader });
     }
 
     /// <summary>
     /// Stock market loop
     /// </summary>
     /// <param name="trader"></param>
-    public void StockMarketLoop(ITrader[] traders)
+    public async Task StockMarketLoop(ITrader[] traders)
     {
         foreach (var sample in GetSamples())
         {
+            var tasks = new List<Task>();
+
             foreach (var trader in traders)
             {
-                if (trader.IsEliminated)
-                    continue;
+                var traderTask =  Task.Run(() => 
+                {
+                    if (trader.IsEliminated)
+                        return;
 
-                trader.AddNewSample(sample.AsEnumerable());
-
+                    trader.AddNewSample(sample.AsEnumerable());
+                });
+                tasks.Add(traderTask);
             }
+
+            await Task.WhenAll(tasks);
         }
     }
 

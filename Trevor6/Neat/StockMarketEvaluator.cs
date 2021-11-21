@@ -51,7 +51,7 @@ public class StockMarketEvaluator : IPhenomeEvaluator<IBlackBox>
         string currencyPair = typeof(TPair).Name;
 
         var stockMarket = new StockMarket<TPair>();
-        stockMarket.StockMarketLoop(trader);
+        stockMarket.StockMarketLoop(trader).GetAwaiter().GetResult();
 
         double fitness = 0;
 
