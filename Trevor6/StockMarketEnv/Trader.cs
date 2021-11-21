@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using Trevor6.Abstract;
 using Trevor6.Learning.Abstract;
 
 
@@ -13,7 +14,7 @@ public class Trader : ITrader
     private const decimal FEE = (decimal)0.00075;
     private const decimal TRADE_AMOUNT_DOLARS = (decimal)100;
 
-    private readonly Stack<Sample> tradeStack = new();
+    private readonly Stack<ITrevorKline> tradeStack = new();
 
     public Trader(string name)
     {
@@ -30,26 +31,28 @@ public class Trader : ITrader
 
     public int NumberOfNonProfitableTrades { get; private set; }
 
-    public void AddNewSample(IEnumerable<Sample> newSample)
+    public void AddNewSample(IEnumerable<Sample> newSample, ITrevorKline latestKline)
     {
+        /*
         // new samples are type queue so last sample is the newest one
         var lastSample = newSample.Last();
+        */
 
-        Think(newSample, lastSample);
+        Think(newSample, latestKline);
     }
 
-    protected virtual void Think(IEnumerable<Sample> newSample, Sample lastSample)
+    protected virtual void Think(IEnumerable<Sample> newSample, ITrevorKline latestKline)
     {
         var random = new Random();
         var prediction = random.Next(0, 2);
 
         if (prediction == 0)
-            Buy(lastSample);
+            Buy(latestKline);
         else
             Sell();
     }
 
-    public void Buy(Sample buySample)
+    public void Buy(ITrevorKline latestKline)
     {
         /*
         if (isInTrade)
@@ -59,7 +62,7 @@ public class Trader : ITrader
         */
 
         // Add the last sample to trade stack
-        tradeStack.Push(buySample);
+        tradeStack.Push(latestKline);
     }
 
     public void Sell()

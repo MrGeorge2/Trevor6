@@ -1,10 +1,13 @@
 ﻿using FancyApollo.DTO.Abstract;
 using MongoDB.Driver;
 using System.Collections.Immutable;
+using Trevor6.Abstract;
 using Trevor6.ExchangeData.DBModels;
 using Trevor6.Learning.Abstract;
 
 namespace Trevor6.Learning;
+
+public record SampleWithLastKline(IEnumerable<Sample> Samples, ITrevorKline LatestKline);
 
 public class StockMarket<TKline> where TKline : TrevorKline
 {
@@ -41,13 +44,13 @@ public class StockMarket<TKline> where TKline : TrevorKline
 
             foreach (var trader in traders)
             {
-                var traderTask =  Task.Run(() => 
-                {
-                    if (trader.IsEliminated)
-                        return;
+                var traderTask = Task.Run(() =>
+               {
+                   if (trader.IsEliminated)
+                       return;
 
-                    trader.AddNewSample(sample.AsEnumerable());
-                });
+                   trader.AddNewSample(sample.Samples, sample.LatestKline);
+               });
                 tasks.Add(traderTask);
             }
 
@@ -69,7 +72,7 @@ public class StockMarket<TKline> where TKline : TrevorKline
     /// Generator method for returning samples
     /// </summary>
     /// <returns></returns>
-    public IEnumerable<IEnumerable<Sample>> GetSamples()
+    public IEnumerable<SampleWithLastKline> GetSamples()
     {
         var klineBuffer = new Queue<TKline>();
 
@@ -79,7 +82,7 @@ public class StockMarket<TKline> where TKline : TrevorKline
 
             if (klineBuffer.Count >= NUMBER_OF_CANDLES_IN_SAMPLE)
             {
-                yield return createNormalizedSample(ImmutableArray.Create(klineBuffer.ToArray()));
+                yield return new SampleWithLastKline(createNormalizedSample(ImmutableArray.Create(klineBuffer.ToArray())), kline);
 
                 klineBuffer.Dequeue();
             }

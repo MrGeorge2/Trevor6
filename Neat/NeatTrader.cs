@@ -1,4 +1,5 @@
 ﻿using SharpNeat.Phenomes;
+using Trevor6.Abstract;
 using Trevor6.Learning;
 
 namespace Trevor6.Neat;
@@ -12,7 +13,7 @@ public class NeatTrader : Trader
         _brain = brain;
     }
 
-    protected override void Think(IEnumerable<Sample> newSample, Sample lastSample)
+    protected override void Think(IEnumerable<Sample> newSample, ITrevorKline lastSample)
     {
         _brain.ResetState();
 

@@ -13,9 +13,9 @@ namespace Trevor6.Learning.Abstract
         bool IsEliminated { get; }
         decimal Profit { get; }
 
-        void AddNewSample(IEnumerable<Sample> kline);
+        void AddNewSample(IEnumerable<Sample> kline, ITrevorKline latestKline);
 
-        void Buy(Sample buySample);
+        void Buy(ITrevorKline latestKline);
 
         void Sell();
     }
