@@ -87,8 +87,8 @@ namespace Neat
         public void Initialize(string name, XmlElement xmlConfig)
         {
             _name = name;
-            _populationSize = 300;
-            _specieCount = 20;
+            _populationSize = 700;
+            _specieCount = 50;
             _activationScheme = NetworkActivationScheme.CreateCyclicFixedTimestepsScheme(2); //ExperimentUtils.CreateActivationScheme(xmlConfig, "Activation");
             _complexityRegulationStr = "Absolute";
             _complexityThreshold = 5187;
@@ -156,6 +156,9 @@ namespace Neat
                 // Create an initial population of randomly generated genomes.
                 genomeList = genomeFactory.CreateGenomeList(populationSize, 0);
 
+            var ggenomeList = genomeFactory.CreateGenomeList(populationSize, 0);
+            
+            ggenomeList.ForEach(x => genomeList.Add(x));
             // Create evolution algorithm.
             return CreateEvolutionAlgorithm(genomeFactory, genomeList);
         }
