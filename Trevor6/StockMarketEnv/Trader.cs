@@ -31,13 +31,13 @@ public class Trader : ITrader
 
     public int NumberOfNonProfitableTrades { get; private set; }
 
+    public override string ToString()
+    {
+        return $"Profit = {Profit} ProfitableTrades={NumberOfProfitabletrades} NonProfitableTrades = {NumberOfNonProfitableTrades}";
+    }
+
     public void AddNewSample(IEnumerable<Sample> newSample, ITrevorKline latestKline)
     {
-        /*
-        // new samples are type queue so last sample is the newest one
-        var lastSample = newSample.Last();
-        */
-
         Think(newSample, latestKline);
     }
 

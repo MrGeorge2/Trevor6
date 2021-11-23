@@ -3,7 +3,7 @@
     <Fn id="0" name="LogisticFunctionSteep" prob="1" />
   </ActivationFunctions>
   <Networks>
-    <Network id="5623" birthGen="22" fitness="157261.45388099758">
+    <Network id="5631" birthGen="22" fitness="157261.45388099758">
       <Nodes>
         <Node type="bias" id="0" />
         <Node type="in" id="1" />
@@ -1774,7 +1774,7 @@
         <Con id="2431" src="349" tgt="1731" wght="1.6954927254193686" />
         <Con id="2434" src="351" tgt="1730" wght="3.0126542473283013" />
         <Con id="2458" src="363" tgt="1730" wght="1.9732882404643814" />
-        <Con id="2525" src="396" tgt="1731" wght="-3.9318307858175894" />
+        <Con id="2525" src="396" tgt="1731" wght="-3.926962565538885" />
         <Con id="2531" src="399" tgt="1731" wght="1.9236752735749052" />
         <Con id="2535" src="401" tgt="1731" wght="-2.448408470931911" />
         <Con id="2536" src="402" tgt="1730" wght="0.7082231775415404" />
@@ -1798,7 +1798,7 @@
         <Con id="2858" src="563" tgt="1730" wght="3.6861287760399586" />
         <Con id="2891" src="579" tgt="1731" wght="1.9355747212402974" />
         <Con id="2968" src="618" tgt="1730" wght="3.44729661575206" />
-        <Con id="2973" src="620" tgt="1731" wght="-3.453560247221131" />
+        <Con id="2973" src="620" tgt="1731" wght="-3.4647281128011977" />
         <Con id="2976" src="622" tgt="1730" wght="-2.5723840578777546" />
         <Con id="2978" src="623" tgt="1730" wght="2.4262810712603344" />
         <Con id="3040" src="654" tgt="1730" wght="-3.4068075606776773" />
