@@ -98,6 +98,8 @@ public class StockMarket<TKline> where TKline : TrevorKline
 
             i++; ;
         }
+
+        Console.WriteLine();
     }
 
     /// <summary>
