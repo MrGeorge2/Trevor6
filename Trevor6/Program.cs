@@ -9,10 +9,10 @@ using Trevor6.Learning.Abstract;
 
 
 
-#if SCRAPING
-
+//#if SCRAPING
+//#endif
 await KlineScraper.ScrapeAllSymbols();
 
-#endif
 
-Console.ReadKey();
+
+// Console.ReadKey();

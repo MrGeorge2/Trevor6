@@ -45,7 +45,7 @@ namespace Trevor6.ExchangeData.Scraper
                 Scrape<SHIBUSDT>(),
                 Scrape<LTCUSDT>()
             };
-
+           
             await Task.WhenAll(tasks);
         }
     }

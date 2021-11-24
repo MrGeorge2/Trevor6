@@ -32,7 +32,7 @@ public abstract class TrevorKline : ITrevorKline
     }
     
     [BsonId]
-    public ObjectId ID { get;  }
+    public ObjectId ID { get; set; }
 
     /// <summary>
     /// Open Time
