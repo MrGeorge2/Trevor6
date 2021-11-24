@@ -56,6 +56,9 @@ public class StockMarket<TKline> where TKline : TrevorKline
 
             await Task.WhenAll(tasks);
         }
+
+        var numberOfEliminated = traders.Count(trader => trader.IsEliminated);
+        Console.WriteLine($"Number of eliminated traders = {numberOfEliminated}");
     }
 
     /// <summary>
@@ -76,6 +79,9 @@ public class StockMarket<TKline> where TKline : TrevorKline
     {
         var klineBuffer = new Queue<TKline>();
 
+        var clinesCount = _klines.Count();
+
+        var i = 0;
         foreach (var kline in _klines)
         {
             klineBuffer.Enqueue(kline);
@@ -85,7 +91,12 @@ public class StockMarket<TKline> where TKline : TrevorKline
                 yield return new SampleWithLastKline(createNormalizedSample(ImmutableArray.Create(klineBuffer.ToArray())), kline);
 
                 klineBuffer.Dequeue();
+                
+                Console.WriteLine($"{i}/{clinesCount}");
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
             }
+
+            i++; ;
         }
     }
 

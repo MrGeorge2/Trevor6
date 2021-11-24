@@ -18,14 +18,14 @@ public class Trader : ITrader
 
     public Trader(string name)
     {
-        Profit = 1;
+        Profit = 0;
         Name = name;
         NumberOfProfitabletrades = 0;
         NumberOfNonProfitableTrades = 0;
     }
 
     public string Name { get; }
-    public bool IsEliminated => Profit < 1;
+    public bool IsEliminated => Profit < 0;
 
     public decimal Profit { get; private set; }
 
@@ -80,7 +80,7 @@ public class Trader : ITrader
         Console.WriteLine($"Player {Name} have total profit of {Profit}");
         */
 
-        if (tradeProfit > 1)
+        if (tradeProfit > 0)
             NumberOfProfitabletrades++;
         else if (tradeProfit < 0)
             NumberOfNonProfitableTrades++;
@@ -100,7 +100,7 @@ public class Trader : ITrader
 
         var buyAmount = (TRADE_AMOUNT_DOLARS / buySample.Open) * (1 - FEE);
         var sellAmount = (sellSample.Close * buyAmount) * (1 - FEE);
-        return sellAmount / TRADE_AMOUNT_DOLARS;
+        return (sellAmount / TRADE_AMOUNT_DOLARS) - 1;
     }
 
     public void Reset()
