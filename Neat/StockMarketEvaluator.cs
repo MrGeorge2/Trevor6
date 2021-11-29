@@ -47,13 +47,13 @@ namespace Neat
             {
                 traders.Add(new NeatTrader(brainWithFitness.Phenome));
             }
-
+            
             evaluateOnCurrentyPair<LTCUSDT>(traders.ToArray());
 
             evaluateOnCurrentyPair<SHIBUSDT>(traders.ToArray());
-
+            
             evaluateOnCurrentyPair<DOGEUSDT>(traders.ToArray());
-
+            
             evaluateOnCurrentyPair<DOTUSDT>(traders.ToArray());
 
             evaluateOnCurrentyPair<XRPUSDT>(traders.ToArray());
