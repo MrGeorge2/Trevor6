@@ -28,7 +28,7 @@ internal class BinanceExchange : IExchangeClient
 
     public static IExchangeClient CreateClient()
     {
-        return new BinanceExchange(new ApiKeyLoader("D:\\prgj\\Trevor6\\ApiData.json"));
+        return new BinanceExchange(new ApiKeyLoader("D:\\prg\\Trevor6\\ApiData.json"));
     }
 
     /// <summary>
