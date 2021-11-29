@@ -49,11 +49,11 @@ namespace Neat
             }
             
             evaluateOnCurrentyPair<LTCUSDT>(traders.ToArray());
-
+            /*
             evaluateOnCurrentyPair<SHIBUSDT>(traders.ToArray());
             
             evaluateOnCurrentyPair<DOGEUSDT>(traders.ToArray());
-            
+            */
             evaluateOnCurrentyPair<DOTUSDT>(traders.ToArray());
 
             evaluateOnCurrentyPair<XRPUSDT>(traders.ToArray());
