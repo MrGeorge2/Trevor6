@@ -39,7 +39,7 @@ namespace TicTacToeCoevolution
     {
         static StockMarketParallelExperiment experiment;
         static NeatEvolutionAlgorithm<NeatGenome> _ea;
-        const string CHAMPION_FILE = @"E:\Projects\Trevor6\Champs\trader_champion.xml";
+        const string CHAMPION_FILE = @"D:\prgj\Trevor6\Champs\trader_champion.xml";
 
         static void Main(string[] args)
         {
